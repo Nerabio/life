@@ -36,10 +36,6 @@ export class Drawer {
 		this.normalizeScale();
 	}
 
-    // get agents() {
-	// 	return Object.values(this.population);
-	// }
-
     normalizeScale = () => {
 		const { devicePixelRatio: pixelRatio } = window;
 

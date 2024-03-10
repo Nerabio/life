@@ -39,7 +39,6 @@ export class World {
 
             neighborsOf(agent).forEach((neighbor) => {
                 
-
                 const positionKey = makeKeyPosition(neighbor);
         
                 if (checked[positionKey]) return;
