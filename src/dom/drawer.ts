@@ -10,8 +10,10 @@ export class Drawer {
     rows: number = 0;
     columns: number = 0;
 
-	constructor(kernelSize: number) {
+	constructor(kernelSize: number, height = window.innerHeight,  width = window.innerWidth ) {
 		this.canvas = this.getCanvasElement();
+		this.canvas.height = height;
+		this.canvas.width = width;
 		this.context = this.getCanvasRenderingContext2D(this.canvas);
 		this.kernel = kernelSize;
 		this.width = this.canvas.offsetWidth;
