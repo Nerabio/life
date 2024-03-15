@@ -11,26 +11,15 @@ export class Drawer {
     columns: number = 0;
 
 	constructor(kernelSize: number) {
-        const findCanvasElement = document.getElementById('canvas');
-        if(findCanvasElement === null){
-            return;
-        }
-
-		this.canvas = findCanvasElement;
-
-		this.context = this.canvas.getContext('2d');
-		const [width, height] = [this.canvas.offsetWidth, this.canvas.offsetHeight];
-
-		// Сохраняем ссылки на контекст и настройки:
-
+		this.canvas = this.getCanvasElement();
+		this.context = this.getCanvasRenderingContext2D(this.canvas);
 		this.kernel = kernelSize;
-
-		this.width = width;
-		this.height = height;
+		this.width = this.canvas.offsetWidth;
+		this.height = this.canvas.offsetHeight;
 
 		// Рассчитываем количество колонок и рядов на поле:
-		this.rows = Math.floor(height / this.kernel);
-		this.columns = Math.floor(width / this.kernel);
+		this.rows = Math.floor(this.height / this.kernel);
+		this.columns = Math.floor(this.width / this.kernel);
 
 		// Нормализуем отображение на экранах с высокой плотностью пикселей:
 		this.normalizeScale();
@@ -80,4 +69,20 @@ export class Drawer {
 		this.context.clearRect(0, 0, this.width, this.height);
 		this.drawGrid();
 	};
+
+	private getCanvasElement = (): HTMLCanvasElement => {
+		const canvasElement = document.getElementById('canvas') as HTMLCanvasElement;
+		if (!canvasElement) {
+			throw new Error('Canvas elemen not found');
+		}
+		return canvasElement;
+	}
+
+	private getCanvasRenderingContext2D = (canvas: HTMLCanvasElement): CanvasRenderingContext2D =>{
+		const context2D = canvas.getContext('2d');
+		if (!context2D || !(context2D instanceof CanvasRenderingContext2D)) {
+			throw new Error('Failed to get 2D context');
+		}
+		return context2D;
+	}
 }
