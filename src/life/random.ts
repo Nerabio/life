@@ -1,11 +1,16 @@
 import { Population, createAgent } from "./agent";
 
-export function populateRandom(rows: number = 0, columns: number = 0): Population {
+interface RangeOption {
+	start?: number;
+	end?: number;
+}
+
+export function populateRandom(rows: number = 0, columns: number = 0, randomCoefficient: number = 0.5): Population {
 	const population: Population = {};
 
-	range(0,columns).forEach((_, i) => {
-		range(0, rows).forEach((_, j) => {
-			if (Math.random() <= 0.5) return;
+	range({end: columns}).forEach((_, i) => {
+		range({end: rows}).forEach((_, j) => {
+			if (Math.random() <= randomCoefficient) return;
 			population[`${i}:${j}`] = createAgent(i, j);
 		});
 	});
@@ -13,7 +18,8 @@ export function populateRandom(rows: number = 0, columns: number = 0): Populatio
 	return population;
 }
 
-const range = (start: number, end: number) => {
+const range = (option: RangeOption): number[] => {
+	const { end = 0, start = 0} = option;
     const length = end - start;
     return Array.from({ length }, (_, i) => start + i);
 }
