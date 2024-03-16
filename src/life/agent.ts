@@ -3,16 +3,14 @@ export interface AgentPosition {
     y: number;
 }
 
-export interface Population {
-    [key: string]: AgentPosition;
-}
+export type Population = Map<string, AgentPosition>;
 
 export function createAgent(x: number, y: number): AgentPosition {
 	return { x, y };
 }
 
 export function isAlive(agent: AgentPosition, population: Population) {
-	return !!population[`${agent.x}:${agent.y}`];
+	return population.has(`${agent.x}:${agent.y}`);
 }
 
 export function neighborsOf(agent: AgentPosition): AgentPosition[] {

@@ -1,18 +1,14 @@
-import { Population,AgentPosition, countAliveAround, neighborsOf, createAgent, makeKeyPosition} from "./agent";
+import { Population, countAliveAround, neighborsOf, createAgent, makeKeyPosition, AgentPosition} from "./agent";
 import { populateRandom } from "./random";
 
-export interface EvolvePopulation {
-    [key: string]: AgentPosition;
-}
-
-export interface CheckedAgentPosition {
-    [key: string]: boolean;
-}
 
 export class World {
     population: Population;
     columns: number = 0;
     rows: number = 0;
+
+    checked = new Set<string>();
+    
 
 	constructor(rows: number, columns: number, population: Population = populateRandom(rows, columns)) {
 		this.rows = rows;
@@ -21,35 +17,35 @@ export class World {
 	}
 
     get agents() {
-        return Object.values(this.population);
+        return Array.from(this.population.values());
     }
 
     evolve = () => {
-        const evolved: EvolvePopulation = {};
-        const checked: CheckedAgentPosition = {};
-    
+        this.checked.clear();
+        const evolvedPopulation: Population = new Map<string, AgentPosition>();
+
         this.agents.forEach((agent) => {
             const alive = countAliveAround(agent, this.population);
     
             if (alive === 2 || alive === 3) {
-                evolved[makeKeyPosition(agent)] = agent;
+                evolvedPopulation.set(makeKeyPosition(agent), agent);
             }
     
             // TODO: Проверить соседей…
 
-            neighborsOf(agent).forEach((neighbor) => {
+            neighborsOf(agent).forEach((cell) => {
                 
-                const positionKey = makeKeyPosition(neighbor);
+                const positionKey = makeKeyPosition(cell);
         
-                if (checked[positionKey]) return;
-                checked[positionKey] = true;
+                if (this.checked.has(positionKey)) return;
+                this.checked.add(positionKey);
         
-                if (countAliveAround(neighbor, this.population) !== 3) return;
-                evolved[positionKey] = createAgent(neighbor.x, neighbor.y);
+                if (countAliveAround(cell, this.population) !== 3) return;
+                evolvedPopulation.set(positionKey, createAgent(cell.x, cell.y));
             });
         });
 
-        this.population = evolved;
+        this.population = evolvedPopulation;
         
 	};
 }

@@ -1,4 +1,4 @@
-import { Population, createAgent } from "./agent";
+import { AgentPosition, Population, createAgent } from "./agent";
 
 interface RangeOption {
 	start?: number;
@@ -6,12 +6,12 @@ interface RangeOption {
 }
 
 export function populateRandom(rows: number = 0, columns: number = 0, randomCoefficient: number = 0.5): Population {
-	const population: Population = {};
+	const population: Population = new Map<string, AgentPosition>();
 
 	range({end: columns}).forEach((_, i) => {
 		range({end: rows}).forEach((_, j) => {
 			if (Math.random() <= randomCoefficient) return;
-			population[`${i}:${j}`] = createAgent(i, j);
+			population.set(`${i}:${j}`,createAgent(i, j));
 		});
 	});
 

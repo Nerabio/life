@@ -34,7 +34,7 @@ function liveGeneration() {
 
 (function gameLoop() {
 	liveGeneration();
-	setTimeout(() => window.requestAnimationFrame(gameLoop), 200);
+	setTimeout(() => window.requestAnimationFrame(gameLoop), 100);
 })();
 
 
