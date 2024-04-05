@@ -22,7 +22,7 @@ import { World } from './life/world';
 // console.log(`${agent.x}:${agent.y}`,isAlive(agent, population));
 // });
 
-const drawer = new Drawer(20);
+const drawer = new Drawer(15);
 const world = new World(50, 50);
 
 function liveGeneration() {
@@ -34,7 +34,7 @@ function liveGeneration() {
 
 (function gameLoop() {
 	liveGeneration();
-	setTimeout(() => window.requestAnimationFrame(gameLoop), 200);
+	setTimeout(() => window.requestAnimationFrame(gameLoop), 100);
 })();
 
 
