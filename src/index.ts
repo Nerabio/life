@@ -25,15 +25,12 @@ import { World } from './life/world';
 const drawer = new Drawer(15);
 const world = new World(50, 50);
 
-function liveGeneration() {
-	drawer.reset();
-	world.evolve();
-	drawer.drawGrid();
-	drawer.drawWorld(world);
+function liveGeneration(world: World, drawer: Drawer) {
+	drawer.render(world.evolve());
 }
 
 (function gameLoop() {
-	liveGeneration();
+	liveGeneration(world, drawer);
 	setTimeout(() => window.requestAnimationFrame(gameLoop), 100);
 })();
 

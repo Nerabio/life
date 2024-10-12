@@ -27,7 +27,13 @@ export class Drawer {
 		this.normalizeScale();
 	}
 
-    normalizeScale = () => {
+	render = (world: World) => {
+		this.reset();
+		this.drawGrid();
+		this.drawWorld(world);
+	}
+
+    private normalizeScale = () => {
 		const { devicePixelRatio: pixelRatio } = window;
 
 		if (pixelRatio > 1) {
@@ -39,7 +45,7 @@ export class Drawer {
 		}
 	};
 
-    drawGrid = () => {
+    private drawGrid = () => {
 		this.context.strokeStyle = 'rgba(0,0,0, 0.3)';
 
 		// Вертикальные линии:
@@ -59,7 +65,8 @@ export class Drawer {
 		}
 	};
 
-    drawWorld = (world: World) => {
+    private drawWorld = (world: World) => {
+
 		this.context.fillStyle = '#000000';
 
 		world.agents.forEach((agent) => {
@@ -67,9 +74,8 @@ export class Drawer {
 		});
 	};
 
-    reset = () => {
+    private reset = () => {
 		this.context.clearRect(0, 0, this.width, this.height);
-		this.drawGrid();
 	};
 
 	private getCanvasElement = (): HTMLCanvasElement => {
