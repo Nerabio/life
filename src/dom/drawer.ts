@@ -1,3 +1,4 @@
+import { AgentPosition } from "../life/agent";
 import { World } from "../life/world";
 
 export class Drawer {
@@ -27,10 +28,10 @@ export class Drawer {
 		this.normalizeScale();
 	}
 
-	render = (world: World) => {
+	render = (agents: AgentPosition[]) => {
 		this.reset();
 		this.drawGrid();
-		this.drawWorld(world);
+		this.drawPopulations(agents);
 	}
 
     private normalizeScale = () => {
@@ -65,11 +66,11 @@ export class Drawer {
 		}
 	};
 
-    private drawWorld = (world: World) => {
+    private drawPopulations = (agents: AgentPosition[]) => {
 
 		this.context.fillStyle = '#000000';
 
-		world.agents.forEach((agent) => {
+		agents.forEach((agent) => {
 			this.context.fillRect(agent.x * this.kernel, agent.y * this.kernel, this.kernel, this.kernel);
 		});
 	};

@@ -1,8 +1,20 @@
 <!DOCTYPE html>
 <html>
-<head><title>TypeScript Greeter</title></head>
+<head>
+    <link rel="stylesheet" href="styles.css">
+    <title>TypeScript Greeter</title></head>
 <body>
-    <canvas  id="canvas"></canvas>
+    <canvas id="canvas"></canvas>
+    <section class="controls">
+        <div class="btns">
+            <button id="startBtn">START</button>
+            <button id="stopBtn">STOP</button>
+        </div>
+        <div class="slider">
+            <input id="slider" type="range" min="0" max="1" step="1" />
+            <span class="slider-value">Population slice number: <output id="value"></output></p>
+        </div>
+    </section>
     <script type="module" src="/src/index.ts"></script>
 </body>
 </html>

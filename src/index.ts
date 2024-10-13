@@ -1,3 +1,4 @@
+import { PopulationRepository } from './components/population-repository';
 import { Drawer } from './dom/drawer';
 import { World } from './life/world';
 
@@ -24,14 +25,53 @@ import { World } from './life/world';
 
 const drawer = new Drawer(15);
 const world = new World(50, 50);
+const populationRepository = new PopulationRepository();
 
 function liveGeneration(world: World, drawer: Drawer) {
-	drawer.render(world.evolve());
+	const evolvePopulation = world.evolve();
+	drawer.render(world.agents);
+	populationRepository.save(evolvePopulation);
+	input.max = populationRepository.iterator.toString();
+	input.value = populationRepository.iterator.toString();
+	value.textContent = populationRepository.iterator.toString();
 }
 
-(function gameLoop() {
+let stateGame: 'paused' | 'starting' | 'stop' = 'paused';
+
+function gameLoop() {
+	if(stateGame !== 'starting'){
+		return;
+	}
 	liveGeneration(world, drawer);
 	setTimeout(() => window.requestAnimationFrame(gameLoop), 100);
-})();
+};
 
 
+
+
+const startBtn =  document.getElementById('startBtn');
+startBtn?.addEventListener('click', () => {
+	stateGame = 'starting';
+	gameLoop();
+});
+
+const stopBtn =  document.getElementById('stopBtn');
+stopBtn?.addEventListener('click', () => {
+	stateGame = 'stop';
+});
+
+const input =  document.getElementById('slider') as HTMLInputElement;
+const value = document.getElementById("value");
+
+input?.addEventListener("change", (event) => {
+	stateGame = 'stop';
+	const populationCount = event.target ? event.target?.valueAsNumber : 0;
+	
+	const currentPopulation = populationRepository.extract(populationCount);
+	if(currentPopulation){
+		drawer.render(Array.from(currentPopulation.values()));
+	}
+	if(value){
+	  value.textContent = populationCount;
+	}
+});

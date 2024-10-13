@@ -20,7 +20,7 @@ export class World {
         return Array.from(this.population.values());
     }
 
-    evolve = (): this => {
+    evolve = (): Population => {
         this.checked.clear();
         const evolvedPopulation: Population = new Map<string, AgentPosition>();
 
@@ -46,6 +46,6 @@ export class World {
         });
 
         this.population = evolvedPopulation;
-        return this;
+        return evolvedPopulation;
 	};
 }
