@@ -1,3 +1,4 @@
+import { ControlPanel } from './components/control-panel/control-panel';
 import { PopulationRepository } from './components/population-repository';
 import { Drawer } from './dom/drawer';
 import { World } from './life/world';
@@ -22,18 +23,17 @@ import { World } from './life/world';
 // neighborsOf({ x: 1, y: 1}).forEach((agent) => {
 // console.log(`${agent.x}:${agent.y}`,isAlive(agent, population));
 // });
-
+const controlPanel = new ControlPanel();
 const drawer = new Drawer(15);
 const world = new World(50, 50);
 const populationRepository = new PopulationRepository();
+populationRepository.subscribeIterator(controlPanel.changeIteratorPopulation.bind(controlPanel))
+
 
 function liveGeneration(world: World, drawer: Drawer) {
 	const evolvePopulation = world.evolve();
 	drawer.render(world.agents);
 	populationRepository.save(evolvePopulation);
-	input.max = populationRepository.iterator.toString();
-	input.value = populationRepository.iterator.toString();
-	value.textContent = populationRepository.iterator.toString();
 }
 
 let stateGame: 'paused' | 'starting' | 'stop' = 'paused';
@@ -60,18 +60,18 @@ stopBtn?.addEventListener('click', () => {
 	stateGame = 'stop';
 });
 
-const input =  document.getElementById('slider') as HTMLInputElement;
-const value = document.getElementById("value");
+// const input =  document.getElementById('slider') as HTMLInputElement;
+// const value = document.getElementById("value") as HTMLElement;
 
-input?.addEventListener("change", (event) => {
-	stateGame = 'stop';
-	const populationCount = event.target ? event.target?.valueAsNumber : 0;
+// input?.addEventListener("change", (event) => {
+// 	stateGame = 'stop';
+// 	const populationCount = event.target ? event.target?.valueAsNumber : 0;
 	
-	const currentPopulation = populationRepository.extract(populationCount);
-	if(currentPopulation){
-		drawer.render(Array.from(currentPopulation.values()));
-	}
-	if(value){
-	  value.textContent = populationCount;
-	}
-});
+// 	const currentPopulation = populationRepository.extract(populationCount);
+// 	if(currentPopulation){
+// 		drawer.render(Array.from(currentPopulation.values()));
+// 	}
+// 	if(value){
+// 	  value.textContent = populationCount;
+// 	}
+// });

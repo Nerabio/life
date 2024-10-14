@@ -1,4 +1,9 @@
-.btns {
+
+.controls .hide {
+    display: none;
+}
+
+.buttons {
     margin-bottom: 20px;
 }
 
